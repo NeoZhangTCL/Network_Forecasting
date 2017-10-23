@@ -1,5 +1,5 @@
-#Network Forecasting
+# Network Forecasting
 
 
-##Resources
+## Resources
 [OTexts](https://www.otexts.org/fpp)

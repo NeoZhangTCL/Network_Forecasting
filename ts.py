@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 class TimeSeriesData:
 
@@ -7,24 +8,36 @@ class TimeSeriesData:
 
     @classmethod
     def readTsFile(cls, fileName):
-        headers = ['DateTime', 'Value']
+        headers = ['DateTime', 'ObservedValue']
         ts = pd.read_csv(fileName, sep=',', header=None, names=headers)
         ts['DateTime'] = pd.to_datetime(ts['DateTime'], format='%Y-%m-%d %H:%M:%S')
         ts.index = ts['DateTime']
+        del ts['DateTime']
         return TimeSeriesData(ts)
 
     def __repr__(self):
         return self.ts.__repr__()
 
-    def getInterval(self):
-        interval = self.ts['DateTime'][1] - self.ts['DateTime'][0]
+    def addCol(self, dataList, colName):
+        se = pd.Series(dataList)
+        self.ts[colName] = se
+
+    def plot(self):
+        self.ts.plot()
+        plt.show()
+
+    def getIntervalLength(self):
+        indexs = self.ts.index.tolist()
+        interval = None
+        if len(indexs) > 1:
+            interval = indexs[1] - indexs[0]
         return interval
 
     def getStartInterval(self):
-        return list(self.ts['DateTime'])[0]
+        return self.ts.index[0]
 
     def getEndInterval(self):
-        return list(self.ts['DateTime'])[-1]
+        return self.ts.index[-1]
 
     def filterTime(self, start=None, end=None):
         if start == None:
@@ -41,12 +54,13 @@ class TimeSeriesData:
             ts = ts.resample('W').sum()
         return TimeSeriesData(ts)
 
-    def getDataList(self):
-        return list(self.ts['Value'])
+    def getDataList(self, valueName = 'ObservedValue'):
+        return list(self.ts[valueName])
 
-# ts = TimeSeriesData.readTsFile("internet-traffic-data-20041119-20050127.csv")
+ts = TimeSeriesData.readTsFile("internet-traffic-data-20041119-20050127.csv")
 # ts = ts.filterTime('2004-11-25', '2004-12-05')
-# print(ts)
+# print(ts.getStartInterval())
 # ts = ts.changeInterval('week')
 # print(ts)
 # print(ts.getDataList())
+print(ts.plot())

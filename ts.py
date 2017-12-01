@@ -57,10 +57,10 @@ class TimeSeriesData:
     def getDataList(self, valueName = 'ObservedValue'):
         return list(self.ts[valueName])
 
-ts = TimeSeriesData.readTsFile("internet-traffic-data-20041119-20050127.csv")
+# ts = TimeSeriesData.readTsFile("internet-traffic-data-20041119-20050127.csv")
 # ts = ts.filterTime('2004-11-25', '2004-12-05')
 # print(ts.getStartInterval())
 # ts = ts.changeInterval('week')
 # print(ts)
 # print(ts.getDataList())
-print(ts.plot())
+# print(ts.plot())

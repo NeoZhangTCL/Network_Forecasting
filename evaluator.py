@@ -1,4 +1,4 @@
-def getMPE(actualData, forecastData):
+def getMAPE(actualData, forecastData):
     if len(actualData) != len(forecastData):
         raise Exception("the observe list and forecast list must has same length")
     size = len(actualData)
@@ -7,5 +7,5 @@ def getMPE(actualData, forecastData):
         if actualData[i] == 0:
             size = size - 1
         else:
-            percentageErrorSum = percentageErrorSum + (actualData[i] - forecastData[i]) / actualData[i]
+            percentageErrorSum = percentageErrorSum + abs(actualData[i] - forecastData[i]) / actualData[i]
     return percentageErrorSum / size

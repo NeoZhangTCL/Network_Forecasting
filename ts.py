@@ -19,12 +19,19 @@ class TimeSeriesData:
         return self.ts.__repr__()
 
     def addCol(self, dataList, colName):
-        se = pd.Series(dataList)
-        self.ts[colName] = se
+        ts = self.ts
+        if len(dataList) < len(ts.index):
+            num = len(ts.index) - len(dataList)
+            headEmptyList = [None] * num
+            dataList = headEmptyList + dataList
+        self.ts[colName] = dataList
 
     def plot(self):
         self.ts.plot()
         plt.show()
+
+    def export(self, fileName):
+        self.ts.to_csv(fileName, sep=',', encoding='utf-8')
 
     def getIntervalLength(self):
         indexs = self.ts.index.tolist()
@@ -57,10 +64,10 @@ class TimeSeriesData:
     def getDataList(self, valueName = 'ObservedValue'):
         return list(self.ts[valueName])
 
-# ts = TimeSeriesData.readTsFile("internet-traffic-data-20041119-20050127.csv")
+ts = TimeSeriesData.readTsFile("internet-traffic-data-20041119-20050127.csv")
 # ts = ts.filterTime('2004-11-25', '2004-12-05')
-# print(ts.getStartInterval())
-# ts = ts.changeInterval('week')
+# print(ts.getEndInterval())
+ts.addCol([1,2,3,4,5,6,31231,7,8,8,98,9,8], 'Val')
 # print(ts)
-# print(ts.getDataList())
-# print(ts.plot())
+ts.export('abc')
+# ts.plot()

@@ -64,10 +64,10 @@ class TimeSeriesData:
     def getDataList(self, valueName = 'ObservedValue'):
         return list(self.ts[valueName])
 
-ts = TimeSeriesData.readTsFile("internet-traffic-data-20041119-20050127.csv")
+# ts = TimeSeriesData.readTsFile("internet-traffic-data-20041119-20050127.csv")
 # ts = ts.filterTime('2004-11-25', '2004-12-05')
 # print(ts.getEndInterval())
-ts.addCol([1,2,3,4,5,6,31231,7,8,8,98,9,8], 'Val')
+# ts.addCol([1,2,3,4,5,6,31231,7,8,8,98,9,8], 'Val')
 # print(ts)
-ts.export('abc')
+# ts.export('abc')
 # ts.plot()

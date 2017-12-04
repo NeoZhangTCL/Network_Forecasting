@@ -6,13 +6,15 @@ def simpleExponentialSmoothing(observedData, alpha):
         predictedData[i] = (1 - alpha) * predictedData[i-1] + alpha * observedData[i-1]
     return (1 - alpha) * predictedData[-1] + alpha * observedData[-1]
 
-def intervalExponentialSmoothing(ts, alpha):
+def intervalExponentialSmoothing(ts, alpha, pivot=None):
 
     indexs = ts.getIndexList()
     res = []
 
     length = len(ts.getDataList())
-    pivot = int(length / 3)
+    if pivot is None:
+        pivot = int(length / 3)
+
     for i in range(length-pivot-1, length-1):
         timestamp = indexs[i]
         hr = timestamp.hour
@@ -21,15 +23,17 @@ def intervalExponentialSmoothing(ts, alpha):
         obData = tstmp.getDataList()
         res.append(simpleExponentialSmoothing(obData, alpha))
 
-    ts.addCol(res, 'ies')
+    ts.addCol(res, 'ies a=' + str(alpha))
 
     return ts
 
 
 def main():
     ts = TimeSeriesData.readTsFile("internet-traffic-data-20041119-20050127.csv")
-    ts = intervalExponentialSmoothing(ts, 1)
+    ts = intervalExponentialSmoothing(ts, 0.7)
+    print(ts)
     ts.plot()
+    ts.export('ies.txt')
 
 
 if __name__ == '__main__':

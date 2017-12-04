@@ -18,6 +18,9 @@ class TimeSeriesData:
     def __repr__(self):
         return self.ts.__repr__()
 
+    def getTs(self):
+        return self.ts
+
     def addCol(self, dataList, colName):
         ts = self.ts
         if len(dataList) < len(ts.index):
@@ -53,7 +56,7 @@ class TimeSeriesData:
             end = str(self.getEndInterval())
         return TimeSeriesData(self.ts.ix[start:end])
 
-    def changeInterval(self, interval=None):
+    def setIntervalLength(self, interval=None):
         ts = self.ts
         if interval == 'day':
             ts = ts.resample('D').sum()
@@ -62,12 +65,21 @@ class TimeSeriesData:
         return TimeSeriesData(ts)
 
     def getDataList(self, valueName = 'ObservedValue'):
-        return list(self.ts[valueName])
+        return self.ts[valueName].tolist()
 
-# ts = TimeSeriesData.readTsFile("internet-traffic-data-20041119-20050127.csv")
-# ts = ts.filterTime('2004-11-25', '2004-12-05')
-# print(ts.getEndInterval())
-# ts.addCol([1,2,3,4,5,6,31231,7,8,8,98,9,8], 'Val')
-# print(ts)
-# ts.export('abc')
-# ts.plot()
+    def getIndexList(self):
+        return self.ts.index.tolist()
+
+    def getIntervalListByHour(self, index):
+        hour = self.ts.index.hour
+        selector = (hour == index)
+        data = self.ts[selector]
+        return TimeSeriesData(data)
+
+    def getIntervalListByDay(self, index):
+        ts = self.changeInterval('day')
+        dayOfWeek = ts.getTs().index.weekday
+        selector = (dayOfWeek == index)
+        data = ts.getTs()[selector]
+        return TimeSeriesData(data)
+

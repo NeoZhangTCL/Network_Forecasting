@@ -6,7 +6,7 @@ def simpleExponentialSmoothing(observedData, alpha):
         predictedData[i] = (1 - alpha) * predictedData[i-1] + alpha * observedData[i-1]
     return (1 - alpha) * predictedData[-1] + alpha * observedData[-1]
 
-def intervalExponentialSmoothing(ts, alpha, pivot=None):
+def dailyES(ts, alpha, pivot=None):
 
     indexs = ts.getIndexList()
     res = []
@@ -30,7 +30,7 @@ def intervalExponentialSmoothing(ts, alpha, pivot=None):
 
 def main():
     ts = TimeSeriesData.readTsFile("internet-traffic-data-20041119-20050127.csv")
-    ts = intervalExponentialSmoothing(ts, 0.7)
+    ts = dailyES(ts, 0.7)
     print(ts)
     ts.plot()
     ts.export('ies.txt')

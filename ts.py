@@ -77,7 +77,7 @@ class TimeSeriesData:
         return TimeSeriesData(data)
 
     def getIntervalListByDay(self, index):
-        ts = self.changeInterval('day')
+        ts = self.setIntervalLength('day')
         dayOfWeek = ts.getTs().index.weekday
         selector = (dayOfWeek == index)
         data = ts.getTs()[selector]

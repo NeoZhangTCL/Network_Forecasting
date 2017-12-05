@@ -4,8 +4,8 @@ def getMAPE(actualData, forecastData):
     size = len(actualData)
     percentageErrorSum = 0
     for i in range(size):
-        if actualData[i] == 0:
+        if (actualData[i] == 0) or (forecastData[i] == None):
             size = size - 1
         else:
-            percentageErrorSum = percentageErrorSum + abs(actualData[i] - forecastData[i]) / actualData[i]
+            percentageErrorSum += abs(actualData[i] - forecastData[i]) / actualData[i]
     return percentageErrorSum / size
